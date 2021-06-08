@@ -1,0 +1,42 @@
+---------------------------------------------------------- WITH SET -----------------------------------------------
+
+WITH 
+SET [6 PRIMEIROS MESES] AS 
+	   '[Tempo].[Mës e Ano].&[2013]&[01-2013]&[01-2013]&[01-2013]: 
+        [Tempo].[Mës e Ano].&[2013]&[01-2013]&[02-2013]&[06-2013]'
+
+SELECT
+
+({ [6 PRIMEIROS MESES] })
+
+ON ROWS, 
+
+[Measures].[Margem]
+
+ON COLUMNS 
+
+FROM [COMPLETO];
+
+-----------------------------------------------------------------------------------------------------------------
+
+WITH 
+SET [6 PRIMEIROS MESES] AS 
+	   '[Tempo].[Mës e Ano].&[2013]&[01-2013]&[01-2013]&[01-2013]: 
+        [Tempo].[Mës e Ano].&[2013]&[01-2013]&[02-2013]&[06-2013]'
+
+MEMBER [Tempo].[Mës e Ano].[SOMA 6 PEIMEIROS MESES DE 2013] AS
+		'SUM(
+		[6 PRIMEIROS MESES],
+		[Measures].[Faturamento Líquido])'
+
+SELECT
+
+({ [6 PRIMEIROS MESES], [Tempo].[Mës e Ano].[SOMA 6 PEIMEIROS MESES DE 2013] })
+
+ON ROWS, 
+
+[Measures].[Margem]
+
+ON COLUMNS 
+
+FROM [COMPLETO]

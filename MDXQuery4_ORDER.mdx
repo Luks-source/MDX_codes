@@ -1,0 +1,18 @@
+---------------------------------------------------------- order -----------------------------------------------
+
+
+SELECT ORDER ( 
+
+({ [Produto].[Marca].&[Sabor da Montanha], [Produto].[Marca].&[Festival de Sabores], [Produto].[Marca].&[Pedaços de Frutas]}),
+
+   [Measures].[Faturamento], asc)
+
+on rows, 
+
+({ [Tempo].[Ano].&[2014] }) on columns 
+
+from [COMPLETO]
+
+where ( {[Measures].[Faturamento]} )
+
+

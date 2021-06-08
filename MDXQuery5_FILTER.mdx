@@ -1,0 +1,39 @@
+---------------------------------------------------------- filter -----------------------------------------------
+
+select 
+	
+FILTER( 
+
+({ [Produto].[Hierarquia de Produtos].[Nível Marca].members }), 
+   [Measures].[Faturamento] >= 10000000) 
+
+on rows, 
+
+({ [Measures].[Faturamento] })
+
+on columns
+
+from [COMPLETO]
+
+where ([Tempo].[Ano].&[2014])
+
+------------------------------------------------------------------------------------------------------------------
+
+select 
+	  
+FILTER(
+ORDER(
+
+	({ [Produto].[Hierarquia de Produtos].[Nível Marca].members }) , 
+	   [Measures].[Faturamento], DESC) ,
+	   [Measures].[Faturamento] >= 10000000) 
+
+ON ROWS, 
+
+	({ [Measures].[Faturamento] })
+
+on columns
+
+from [COMPLETO]
+
+where ([Tempo].[Ano].&[2014])

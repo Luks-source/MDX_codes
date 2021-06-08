@@ -1,0 +1,115 @@
+---------------------------------------------------------- WITH -----------------------------------------------
+
+SELECT 
+
+({ [Produto].[Categoria].MEMBERS })
+
+ON ROWS, 
+
+({ [Measures].[Faturamento] , 
+   [Measures].[Unidade Vendida] })
+
+ON COLUMNS 
+
+FROM [COMPLETO]
+
+WHERE ([Tempo].[Ano].&[2014])
+
+-----------------------------------------------------------------------------------------------------------------
+
+WITH 
+MEMBER [Measures].[Faturamento novo] AS 
+	   '[Measures].[Faturamento] - [Measures].[Frete Rateio] - [Measures].[Imposto]'
+
+SELECT 
+
+({ [Produto].[Categoria].MEMBERS })
+
+ON ROWS, 
+
+({ [Measures].[Faturamento] , 
+   [Measures].[Unidade Vendida], 
+   [Measures].[Faturamento novo] })
+
+ON COLUMNS 
+
+FROM [COMPLETO]
+
+WHERE ([Tempo].[Ano].&[2014])
+
+-----------------------------------------------------------------------------------------------------------------
+
+WITH 
+MEMBER [Measures].[Faturamento novo] AS 
+	   '[Measures].[Faturamento] - [Measures].[Frete Rateio] - [Measures].[Imposto]'
+
+MEMBER [Measures].[VARIACAO NOVA] AS 
+	   '[Measures].[Faturamento novo] / [Measures].[Faturamento]'
+
+SELECT 
+
+({ [Produto].[Categoria].MEMBERS })
+
+ON ROWS, 
+
+({ [Measures].[Faturamento] , 
+   [Measures].[Unidade Vendida], 
+   [Measures].[Faturamento novo], 
+   [Measures].[VARIACAO NOVA] })
+
+ON COLUMNS 
+
+FROM [COMPLETO]
+
+WHERE ([Tempo].[Ano].&[2014])
+
+------------------------------------------------------------------------------,-----------------------------------
+
+WITH 
+MEMBER [Measures].[Faturamento novo] AS 
+	   '[Measures].[Faturamento] - [Measures].[Frete Rateio] - [Measures].[Imposto]', 
+		FORMAT_STRING = '#,###.##' 
+
+MEMBER [Measures].[VARIACAO NOVA] AS 
+	   '[Measures].[Faturamento novo] / [Measures].[Faturamento]', 
+		FORMAT_STRING = '#,###.## %'
+
+SELECT 
+
+({ [Produto].[Categoria].MEMBERS })
+
+ON ROWS, 
+
+({ [Measures].[Faturamento] , 
+   [Measures].[Unidade Vendida], 
+   [Measures].[Faturamento novo], 
+   [Measures].[VARIACAO NOVA] })
+
+ON COLUMNS 
+
+FROM [COMPLETO]
+
+WHERE ([Tempo].[Ano].&[2014])
+
+------------------------------------------------------------------------------,-----------------------------------
+
+WITH 
+MEMBER [Tempo].[Mës e Ano].[VAR JAN E FEV] AS 
+	   '( 1 - ([Tempo].[Mës e Ano].&[2013]&[01-2013]&[01-2013]&[01-2013] / [Tempo].[Mës e Ano].&[2013]&[01-2013]&[01-2013]&[02-2013]))', 
+		FORMAT_STRING = '#,###.00 %'
+
+SELECT 
+
+({ [Tempo].[Mës e Ano].&[2013]&[01-2013]&[01-2013]&[01-2013] ,
+   [Tempo].[Mës e Ano].&[2013]&[01-2013]&[01-2013]&[02-2013] , 
+   [Tempo].[Mës e Ano].[VAR JAN E FEV]})
+
+ON COLUMNS, 
+
+({ [Produto].[Marca].MEMBERS })
+
+ON ROWS 
+
+FROM [COMPLETO]
+
+WHERE ([Measures].[Faturamento])
